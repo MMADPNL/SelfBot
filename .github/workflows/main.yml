@@ -1,11 +1,10 @@
-name: Run Telegram Bot
+name: Run SelfBot
 
 on:
   workflow_dispatch:
-  push:
 
 jobs:
-  bot:
+  selfbot:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,15 +14,16 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
 
-      - name: Install requirements
+      - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run bot
+      - name: Run SelfBot
         env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          OWNER_ID: ${{ secrets.OWNER_ID }}
-        run: |
-          python keep_alive.py
+          API_ID: ${{ secrets.API_ID }}
+          API_HASH: ${{ secrets.API_HASH }}
+          SESSION_NAME: selfbot
+        run: python main.py
